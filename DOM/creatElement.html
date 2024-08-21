@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create Elements</title>
+</head>
+<body>
+    <div class="parent" id="main">
+        <div class="child">Monday</div>
+        <div class="child">Tuesday</div>
+        <div class="child">Webdesday</div>
+        <div class="child">thursday</div>
+    </div>
+</body>
+
+
+<script>
+
+    const parent = document.querySelector(".parent")
+    console.log(parent.getAttribute("id")); //main
+    console.log(parent.setAttribute("class", "farhan parent"));
+    
+    
+    console.log(parent);
+
+    // you can access the children
+      const children = Array.from(parent.children)
+    console.log(children); // return html collection 
+    
+    children.forEach((e) =>{
+        e.style.color = "red";
+    })
+
+    // accessing parent Element via child
+    const childs = document.querySelector(".child")
+    console.log(childs.parentElement);
+    
+    console.log(parent.childNodes);
+    
+    // creating Elements
+
+    const button = document.createElement('button')
+    const text = document.createTextNode("Click Me !")
+    button.appendChild(text)
+    parent.appendChild(button)
+
+
+
+</script>
+</html>
