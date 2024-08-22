@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <input type="number" id="num">
+        <button id="check">check</button>
+        <p id="prev-val">Prev Values :</p>
+        <p id="remain">Remain Attempt : 5</p>
+        <button id="newGame">New Game</button>
+    </div>
+</body>
+    <script>
+            const checkBtn = document.querySelector("#check")
+            const previouValue = document.querySelector("#prev-val")
+            const remainGuess = document.querySelector("#remain")
+            const newGame = document.querySelector("#newGame")
+            const input = document.querySelector("#num")
+
+            let startGame = true
+            let PrevValueArr = []
+            let totalGuess = 5
+
+            let correctAnswer = Math.floor(Math.random() * 10 +1)
+            console.log(correctAnswer);
+            
+            if(startGame) {
+                newGame.style.display = "none"
+                checkBtn.addEventListener("click", (e) => {
+                    e.preventDefault()
+                    const userInput = parseInt(document.querySelector("#num").value)
+                    document.querySelector("#num").value = ' ';
+                    input.focus()
+                    
+                    isNumber(userInput)
+                })
+            }
+
+            function isNumber(userInput){
+                if(isNaN(userInput)) {
+                    alert("Please Enter Valid Numbers")
+
+                }  else if(userInput > 10){
+                    alert("Enter Number Between 1 to 10")
+
+                }   else if(userInput < 0)  {
+                    alert("Enter Number Between 1 to 10")
+
+                }  else if(totalGuess === 0) {
+                    alert(`you Lose ! Answer : ${correctAnswer}`)
+                    newGame.style.display = "block"
+                    checkBtn.disabled = true
+                }
+                else {
+                    checkNumber(userInput);
+                }
+            }
+
+            function checkNumber(userInput) {
+                if(userInput === correctAnswer) {
+                    alert(`You guess correct answer in ${(5-totalGuess)+1}`)
+                    PrevValueArr.push(userInput)
+
+                }   else {
+                    totalGuess--;
+                    PrevValueArr.push(userInput)
+                    previouValue.innerHTML = `Prev Values : ${PrevValueArr}`
+                    remainGuess.innerHTML = `Remain Guess : ${totalGuess}`
+                }
+
+            }
+
+            newGame.addEventListener("click",(e) => {
+                e.preventDefault();
+                correctAnswer = Math.floor(Math.random() * 10 +1)
+                console.log("New Game answer : ",correctAnswer);
+                totalGuess = 5
+                PrevValueArr = []
+                newGame.style.display = "none"
+                checkBtn.disabled = false
+                previouValue.innerHTML = `Prev Values : ${PrevValueArr}`
+                remainGuess.innerHTML = `Remain Guess : ${totalGuess}`
+            })
+
+
+
+
+    </script>
+</html>
