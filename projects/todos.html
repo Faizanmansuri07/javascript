@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .line{
+      text-decoration: line-through;
+    }
+    li button {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -19,6 +27,7 @@
   <script>
       const input = document.querySelector("#input-box")
       const todoLists = document.querySelector(".items")
+      const header = document.querySelector("#header")
       let isEditable = false
       const todos = []
       let currentIndex = null;
@@ -63,6 +72,11 @@ function addTodo() {
         li.appendChild(deleteBtn)
         deleteBtn.onclick = () => deleteTodo(index)
 
+        const isCompleteTodoBtn = document.createElement("button")
+        isCompleteTodoBtn.innerHTML = "Complete ?"
+        li.appendChild(isCompleteTodoBtn)
+        isCompleteTodoBtn.onclick = () => isTodoComplete(li)
+
         localStorage.setItem('todos', JSON.stringify(todos));
 
     });
@@ -83,6 +97,10 @@ function addTodo() {
    
     todos.splice(index, 1);
     addTodo()
+  }
+  function isTodoComplete(li) {
+   
+    li.classList.toggle("line")
   }
   </script>
 </html>
