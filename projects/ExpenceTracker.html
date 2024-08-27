@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker with Update/Delete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .expense-list {
+            margin-top: 20px;
+        }
+
+        .expense-list h3 {
+            margin-bottom: 10px;
+        }
+
+        .expense-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .expense-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .expense-list button {
+            margin-left: 10px;
+            padding: 5px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .expense-list button.update {
+            background-color: #ffc107;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Expense Tracker with Update/Delete</h1>
+
+        <div class="input-group">
+            <label for="expense-name">Expense Name</label>
+            <input type="text" id="expense-name" placeholder="Enter expense name">
+        </div>
+
+        <div class="input-group">
+            <label for="expense-amount">Amount</label>
+            <input type="number" id="expense-amount" placeholder="Enter amount">
+        </div>
+
+        <button onclick="addOrUpdateExpense()">Add Expense</button>
+
+        <div class="expense-list">
+            <h3>Expenses:</h3>
+            <ul id="expenses"></ul>
+        </div>
+
+        <div class="summary">
+            Total: $<span id="total-amount">0</span>
+        </div>
+    </div>
+
+    <script>
+        let expenses = [];
+        let isEditing = false;
+        let currentIndex = null;
+
+        function addOrUpdateExpense() {
+            const name = document.getElementById('expense-name').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+
+            if (name && amount) {
+                if (isEditing) {
+                    expenses[currentIndex] = { name, amount };
+                    console.log(expenses);
+                    
+                    isEditing = false;
+                    currentIndex = null;
+                    document.querySelector('button').textContent = "Add Expense";
+                } else {
+                    expenses.push({ name, amount });
+                }
+                updateExpenseList();
+                updateTotal();
+            }
+
+            document.getElementById('expense-name').value = '';
+            document.getElementById('expense-amount').value = '';
+            console.log(expenses);
+            
+        }
+
+        function updateExpenseList() {
+            const expenseList = document.getElementById('expenses');
+            expenseList.innerHTML = '';
+
+            expenses.forEach((expense, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${expense.name}: $${expense.amount.toFixed(2)}`;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = () => deleteExpense(index);
+                li.appendChild(deleteBtn);
+
+                const updateBtn = document.createElement('button');
+                updateBtn.textContent = 'Update';
+                updateBtn.classList.add('update');
+                updateBtn.onclick = () => editExpense(index);
+                li.appendChild(updateBtn);
+
+                expenseList.appendChild(li);
+            });
+        }
+
+        function deleteExpense(index) {
+            expenses.splice(index, 1);
+            updateExpenseList();
+            updateTotal();
+        }
+
+        function editExpense(index) {
+            const expense = expenses[index];
+            console.log(expense);
+            
+            document.getElementById('expense-name').value = expense.name;
+            document.getElementById('expense-amount').value = expense.amount;
+            isEditing = true;
+            currentIndex = index;
+            document.querySelector('button').textContent = "Update Expense";
+        }
+
+        function updateTotal() {
+            const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            document.getElementById('total-amount').textContent = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>

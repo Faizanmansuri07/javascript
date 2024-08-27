@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <h1 id="header">Todo App</h1>
+        <input type="text" id="input-box">
+        <button id="addTodo" onclick="isValidTodo()">Add Todo</button>
+
+        <ul class="items">
+          
+        </ul>
+</div>
+</body>
+  <script>
+      const input = document.querySelector("#input-box")
+      const todoLists = document.querySelector(".items")
+      let isEditable = false
+      const todos = []
+      let currentIndex = null;
+
+
+      function isValidTodo() {
+    if (!input.value) {
+        alert("Please Enter Valid Todo");
+    } else {
+      const todo = input.value;
+    
+      if(isEditable) {
+        isEditable = false
+        todos[currentIndex] = {todo}
+      }
+      else {
+        todos.push({ todo });
+      }
+        addTodo(); // Call addTodo without any arguments
+    }
+}
+
+function addTodo() {
+    // Clear the existing list to avoid duplication
+    todoLists.innerHTML = "";
+
+    // Render all todos again
+    todos.forEach(({ todo },index) => {
+        const li = document.createElement("li");
+        li.textContent = todo;
+
+        const editButton = document.createElement("button");
+        editButton.innerHTML = "Edit";
+
+        // Append the li to the list
+        li.appendChild(editButton);
+        editButton.onclick = () => editTodo(index)
+        todoLists.appendChild(li);
+
+        const deleteBtn = document.createElement("button")
+        deleteBtn.innerHTML = "Remove"
+        li.appendChild(deleteBtn)
+        deleteBtn.onclick = () => deleteTodo(index)
+
+        localStorage.setItem('todos', JSON.stringify(todos));
+
+    });
+
+    document.querySelector("#input-box").value = "";
+    console.log(todos); // Optional: To check the current state of todos array
+}
+
+  function editTodo(index) {
+    const todo = todos[index].todo
+    input.value = todo;
+    isEditable = true
+   currentIndex = index
+
+  }
+
+  function deleteTodo(index) {
+   
+    todos.splice(index, 1);
+    addTodo()
+  }
+  </script>
+</html>
