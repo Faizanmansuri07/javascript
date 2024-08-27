@@ -75,7 +75,7 @@ function addTodo() {
         const isCompleteTodoBtn = document.createElement("button")
         isCompleteTodoBtn.innerHTML = "Complete ?"
         li.appendChild(isCompleteTodoBtn)
-        isCompleteTodoBtn.onclick = () => isTodoComplete(li)
+        isCompleteTodoBtn.onclick = () => isTodoComplete(li,editButton)
 
         localStorage.setItem('todos', JSON.stringify(todos));
 
@@ -98,9 +98,16 @@ function addTodo() {
     todos.splice(index, 1);
     addTodo()
   }
-  function isTodoComplete(li) {
+  function isTodoComplete(li,editButton) {
    
     li.classList.toggle("line")
+    console.log(li.className);
+    if(li.className === "line") {
+      editButton.disabled = true
+    }
+    else {
+      editButton.disabled = false
+    }
   }
   </script>
 </html>
