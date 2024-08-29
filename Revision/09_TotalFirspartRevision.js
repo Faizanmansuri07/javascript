@@ -55,7 +55,7 @@ console.log(str.charAt(2)); // i
 
 // Note : the diff. between at() and charAt() 
 // at() take negative values also
-// but charAt() Note
+// but charAt() Not
 
 // ---------------------------------------------------------------------
 
@@ -173,3 +173,8 @@ console.log(spreadOp);
 //include()
 // return boolean
 console.log(marvel.includes("spiderman")); // true
+
+// indexOf()
+// return index
+console.log(marvel.indexOf('spiderman'));
+
